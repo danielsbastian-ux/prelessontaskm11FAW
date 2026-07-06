@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ELLE 2208 — Pre-Lesson Task | Evidence Isn't Enough</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+    <style>
+        /* ===== ROOT ===== */
+        :root {
+            --ink: #1B1F23;
+            --paper: #F7F5EF;
+            --paper-raised: #FFFFFF;
+            --claim: #1F5C56;
+            --claim-tint: #E4EFEC;
+            --evidence: #3A5A8C;
+            --evidence-tint: #E7EDF6;
+            --analysis: #B9762F;
+            --analysis-tint: #F7ECDC;
+            --concl: #6B4C6B;
+            --concl-tint: #F0E7EF;
+            --danger: #A6403A;
+            --danger-tint: #F7E7E5;
+            --line: #DCD6C8;
+            --shadow: 0 10px 30px -12px rgba(27, 31, 35, 0.18);
+        }
+        * {
+            box-sizing: border-box;
+        }
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: var(--paper);
+            color: var(--ink);
+            font-family: 'Source Sans 3', sans-serif;
+            line-height: 1.55;
+            min-height: 100vh;
+        }
+        .wrap {
+            max-width: 840px;
+            margin: 0 auto;
+            padding: 28px 20px 80px;
+        }
+        h1,
+        h2,
+        h3 {
+            font-family: 'Fraunces', serif;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin: 0 0 6px;
+        }
+        .eyebrow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--claim);
+            font-weight: 600;
+        }
+        .top-header {
+            border-bottom: 2px solid var(--ink);
+            padding-bottom: 16px;
+            margin-bottom: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .top-header h1 {
+            font-size: 26px;
+        }
+        .top-header p {
+            margin: 2px 0 0;
+            color: #555;
+            font-size: 14px;
+        }
+        .badge-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            padding: 5px 9px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: var(--paper-raised);
+        }
+
+        /* ===== STATUS BAR ===== */
+        #statusbar {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: rgba(247, 245, 239, 0.94);
+            backdrop-filter: blur(6px);
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            margin: 0 -20px 22px;
+        }
+        #timer {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 18px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            background: var(--paper-raised);
+            border: 1px solid var(--line);
+        }
+        #timer.low {
+            color: var(--danger);
+            border-color: var(--danger);
+            background: var(--danger-tint);
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: .55;
+            }
+        }
+        #tabflag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--danger);
+            display: none;
+            align-items: center;
+            gap: 6px;
+        }
+        #tabflag.show {
+            display: flex;
+        }
+        #tabflag .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--danger);
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--paper-raised);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 22px 24px;
+            margin-bottom: 18px;
+            box-shadow: var(--shadow);
+        }
+        .card.claim {
+            border-left: 5px solid var(--claim);
+        }
+        .card.evidence {
+            border-left: 5px solid var(--evidence);
+        }
+        .card.analysis {
+            border-left: 5px solid var(--analysis);
+        }
+        .card.concl {
+            border-left: 5px solid var(--concl);
+        }
+
+        .qtag {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: .08em;
+            padding: 3px 8px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .qtag.claim {
+            background: var(--claim-tint);
+            color: var(--claim);
+        }
+        .qtag.evidence {
+            background: var(--evidence-tint);
+            color: var(--evidence);
+        }
+        .qtag.analysis {
+            background: var(--analysis-tint);
+            color: var(--analysis);
+        }
+        .qtag.concl {
+            background: var(--concl-tint);
+            color: var(--concl);
+        }
+
+        label.field-label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            margin: 14px 0 6px;
+        }
+        input[type=text],
+        textarea,
+        select {
+            width: 100%;
+            font-family: inherit;
+            font-size: 15px;
+            padding: 10px 12px;
+            border: 1.5px solid var(--line);
+            border-radius: 8px;
+            background: #FEFEFC;
+            color: var(--ink);
+            transition: border-color .15s;
+        }
+        input[type=text]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--claim);
+        }
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+        select {
+            cursor: pointer;
+        }
+        .quote {
+            background: var(--paper);
+            border-left: 3px solid var(--ink);
+            padding: 10px 14px;
+            font-style: italic;
+            margin: 8px 0 4px;
+            border-radius: 0 6px 6px 0;
+            font-size: 15px;
+        }
+        .hint {
+            font-size: 12.5px;
+            color: #777;
+            margin-top: 4px;
+        }
+        .missing {
+            outline: 2px solid var(--danger) !important;
+            box-shadow: 0 0 0 3px var(--danger-tint);
+        }
+        .missing-card {
+            border-color: var(--danger) !important;
+        }
+
+        /* ===== START ===== */
+        #start-screen .card {
+            max-width: 560px;
+            margin: 40px auto;
+        }
+        .name-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        @media(max-width:520px) {
+            .name-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== BUTTONS ===== */
+        button {
+            font-family: 'Source Sans 3', sans-serif;
+            cursor: pointer;
+            border: none;
+            border-radius: 9px;
+            font-weight: 600;
+            font-size: 15px;
+            padding: 12px 22px;
+            transition: transform .08s, background .15s;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        .btn-primary {
+            background: var(--claim);
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: #194b46;
+        }
+        .btn-primary:disabled {
+            background: #B9C4C1;
+            cursor: not-allowed;
+        }
+        .btn-ghost {
+            background: transparent;
+            color: var(--ink);
+            border: 1.5px solid var(--line);
+        }
+        .btn-ghost:hover {
+            border-color: var(--ink);
+        }
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        #submit-row {
+            display: flex;
+            justify-content: center;
+            margin-top: 24px;
+        }
+        #submit-row button {
+            min-width: 220px;
+            font-size: 16px;
+            letter-spacing: .02em;
+        }
+
+        #reminder-box {
+            display: none;
+            background: var(--danger-tint);
+            border: 1.5px solid var(--danger);
+            color: var(--danger);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 18px;
+            font-size: 14px;
+        }
+        #reminder-box.show {
+            display: block;
+        }
+        #reminder-box strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(27, 31, 35, 0.55);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: 20px;
+        }
+        .modal-overlay.show {
+            display: flex;
+        }
+        .modal-box {
+            background: var(--paper-raised);
+            border-radius: 14px;
+            padding: 26px 28px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: var(--shadow);
+        }
+        .modal-box h3 {
+            margin-bottom: 8px;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .modal-actions button {
+            flex: 1;
+        }
+
+        /* ===== RESULTS ===== */
+        #results-screen {
+            display: none;
+        }
+        .score-hero {
+            text-align: center;
+            padding: 34px 20px;
+            background: var(--claim);
+            color: #fff;
+            border-radius: 16px;
+            margin-bottom: 26px;
+        }
+        .score-hero .num {
+            font-family: 'Fraunces', serif;
+            font-size: 52px;
+            font-weight: 700;
+        }
+        .score-hero .label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            opacity: .85;
+        }
+        .result-item {
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin-bottom: 14px;
+            background: var(--paper-raised);
+        }
+        .result-item .rhead {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .pts {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 999px;
+        }
+        .pts.full {
+            background: #E4F3E6;
+            color: #2A7A3B;
+        }
+        .pts.partial {
+            background: var(--analysis-tint);
+            color: var(--analysis);
+        }
+        .pts.none {
+            background: var(--danger-tint);
+            color: var(--danger);
+        }
+        .your-answer {
+            background: var(--evidence-tint);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin: 6px 0;
+            font-size: 14.5px;
+        }
+        .model-answer {
+            background: var(--claim-tint);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin: 6px 0;
+            font-size: 14.5px;
+        }
+        .small-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10.5px;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: #666;
+            margin-bottom: 3px;
+            display: block;
+        }
+        #integrity-note {
+            font-size: 13px;
+            color: #777;
+            margin-top: 26px;
+            border-top: 1px solid var(--line);
+            padding-top: 14px;
+        }
+        footer {
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            margin-top: 40px;
+        }
+
+        /* explanation grading badge in results */
+        .exp-badge {
+            display: inline-block;
+            font-size: 12px;
+            padding: 2px 10px;
+            border-radius: 999px;
+            margin-left: 6px;
+        }
+        .exp-badge.ok {
+            background: #E4F3E6;
+            color: #2A7A3B;
+        }
+        .exp-badge.miss {
+            background: var(--danger-tint);
+            color: var(--danger);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrap">
+
+        <!-- ===== START SCREEN ===== -->
+        <div id="start-screen">
+            <div class="top-header" style="border:none; margin-bottom:0; padding-bottom:0;">
+                <div>
+                    <div class="eyebrow">ELLE 2208 · Meeting 11 · Pre-Lesson Task</div>
+                    <h1>Evidence Isn't Enough</h1>
+                    <p>Foundation of Academic Writing — Jakarta International University</p>
+                </div>
+            </div>
+            <div class="card claim">
+                <h3>Before you begin</h3>
+                <p style="font-size:14.5px; color:#444;">This task is worth <strong>5% of your course grade</strong>. You will have <strong>20 minutes</strong> once you press Start. Enter your details below to begin. Keep this tab open and in focus for the full duration.</p>
+                <label class="field-label" for="s-name">Full Name</label>
+                <input type="text" id="s-name" placeholder="e.g. Andrias Yulianto" />
+                <label class="field-label" for="s-id">Student ID</label>
+                <input type="text" id="s-id" placeholder="e.g. 2023-01-0042" />
+                <div id="start-error" style="display:none; color:var(--danger); font-size:13px; margin-top:10px;">Please enter both your name and Student ID to continue.</div>
+                <div style="margin-top:20px;">
+                    <button class="btn-primary" id="start-btn" style="width:100%;">Start Task (20:00)</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== QUIZ SCREEN ===== -->
+        <div id="quiz-screen" style="display:none;">
+            <div id="statusbar">
+                <div id="timer">20:00</div>
+                <div id="tabflag"><span class="dot"></span><span id="tabflag-text">Tab switch detected (1)</span></div>
+            </div>
+
+            <div class="top-header">
+                <div>
+                    <div class="eyebrow">Pre-Lesson Task</div>
+                    <h1 style="font-size:22px;">Evidence Isn't Enough</h1>
+                </div>
+                <div class="badge-row">
+                    <span class="badge" id="who-badge">—</span>
+                </div>
+            </div>
+
+            <div id="reminder-box"></div>
+
+            <!-- 4.1 context -->
+            <div class="card">
+                <h3 style="font-size:17px;">4.1 — From Example to Analysis</h3>
+                <p style="font-size:14.5px; color:#444;">Backing up a claim takes two steps: <strong>Evidence</strong> (a specific example, statistic, or observation) and <strong>Analysis</strong> (a sentence explaining why that evidence supports the claim). Use this to answer Part A and Part B below.</p>
+            </div>
+
+            <!-- ===== PART A ===== -->
+            <h2 style="font-size:19px; margin-top:28px;">Part A — Evidence or Analysis? <span style="font-weight:400; font-size:14px; color:#777;">(1 point each)</span></h2>
+
+            <div class="card evidence" data-qid="a1">
+                <span class="qtag evidence">Question 1</span>
+                <div class="quote">"A recent city report found that only 12% of residents use public transit for daily commutes."</div>
+                <label class="field-label">Label this sentence</label>
+                <select data-role="label">
+                    <option value="">— Select —</option>
+                    <option value="evidence">Evidence</option>
+                    <option value="analysis">Analysis</option>
+                </select>
+                <label class="field-label">Explain your choice in one phrase</label>
+                <input type="text" data-role="explain" placeholder="e.g. It reports a specific statistic" />
+            </div>
+
+            <div class="card evidence" data-qid="a2">
+                <span class="qtag evidence">Question 2</span>
+                <div class="quote">"This low figure suggests that convenience, not cost, is the main barrier to adoption, since transit fares remain cheaper than fuel."</div>
+                <label class="field-label">Label this sentence</label>
+                <select data-role="label">
+                    <option value="">— Select —</option>
+                    <option value="evidence">Evidence</option>
+                    <option value="analysis">Analysis</option>
+                </select>
+                <label class="field-label">Explain your choice in one phrase</label>
+                <input type="text" data-role="explain" placeholder="e.g. It interprets what the statistic means" />
+            </div>
+
+            <div class="card evidence" data-qid="a3">
+                <span class="qtag evidence">Question 3</span>
+                <div class="quote">"For instance, one factory reduced water waste by 40% after installing sensor-based taps."</div>
+                <label class="field-label">Label this sentence</label>
+                <select data-role="label">
+                    <option value="">— Select —</option>
+                    <option value="evidence">Evidence</option>
+                    <option value="analysis">Analysis</option>
+                </select>
+                <label class="field-label">Explain your choice in one phrase</label>
+                <input type="text" data-role="explain" placeholder="e.g. It gives a specific measurable example" />
+            </div>
+
+            <!-- ===== PART B ===== -->
+            <h2 style="font-size:19px; margin-top:28px;">Part B — Expand the Example <span style="font-weight:400; font-size:14px; color:#777;">(4 points)</span></h2>
+            <div class="card analysis" data-qid="b1">
+                <span class="qtag analysis">Question 4</span>
+                <div class="quote">"Many small businesses closed during the pandemic. For example, several family-owned restaurants in the area shut down permanently."</div>
+                <label class="field-label">Write one analysis sentence explaining why this example supports the idea that small businesses were especially vulnerable.</label>
+                <textarea data-role="longanswer" placeholder="Type your analysis sentence here..."></textarea>
+                <div class="hint">Aim for one well-developed sentence that answers "so what?"</div>
+            </div>
+
+            <!-- ===== PART C ===== -->
+            <h2 style="font-size:19px; margin-top:28px;">Part C — Bring Your Materials</h2>
+            <div class="card concl" data-qid="c1">
+                <span class="qtag concl">Question 5</span>
+                <p style="font-size:14.5px;">Bring your Detailed Outline from Meeting 10. You will draft your Body Paragraph 1 in class using the topic sentence you already planned.</p>
+                <label class="field-label">Confirm</label>
+                <select data-role="label">
+                    <option value="">— Select —</option>
+                    <option value="yes">Yes, I have it ready</option>
+                    <option value="no">No, not yet</option>
+                </select>
+            </div>
+
+            <div id="submit-row">
+                <button class="btn-primary" id="submit-btn">Submit</button>
+            </div>
+        </div>
+
+        <!-- ===== CONFIRM MODAL ===== -->
+        <div class="modal-overlay" id="confirm-modal">
+            <div class="modal-box">
+                <h3>Submit your answers?</h3>
+                <p style="font-size:14px; color:#555;">Once submitted, you cannot change your answers. Are you sure you want to submit?</p>
+                <div class="modal-actions">
+                    <button class="btn-ghost" id="confirm-no">No</button>
+                    <button class="btn-primary" id="confirm-yes">Yes</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== RESULTS SCREEN ===== -->
+        <div id="results-screen">
+            <div class="top-header"><div><div class="eyebrow">Pre-Lesson Task — Results</div><h1 style="font-size:24px;">Your Report</h1></div></div>
+            <div class="score-hero">
+                <div class="label">Total Score</div>
+                <div class="num" id="score-num">0 / 7</div>
+            </div>
+            <div id="results-list"></div>
+            <div id="integrity-note"></div>
+        </div>
+
+        <footer>ELLE 2208 · Foundation of Academic Writing · Daniel Sbastian &amp; Andrias Yulianto · Jakarta International University</footer>
+    </div>
+
+    <script>
+        /* ============================================================
+           CONFIG
+           ============================================================ */
+        const DURATION_SECONDS = 20 * 60;
+        const GAS_ENDPOINT =
+            "https://script.google.com/macros/s/AKfycbyru59JOmpieVFouxhgwiVbAK6JTBM8TIywJqWlyEBR4mRjG2WkSL-Ls1ZMb4g2kBIg/exec";
+        const ACTIVITY = "PreLessonTask_M11";
+        const TOTAL_POINTS = 7;
+
+        /* ============================================================
+           STATE
+           ============================================================ */
+        let studentName = "",
+            studentId = "";
+        let timeLeft = DURATION_SECONDS;
+        let timerInterval = null;
+        let tabSwitchCount = 0;
+        let autoSubmitted = false;
+        let submitted = false;
+
+        /* ============================================================
+           HELPERS
+           ============================================================ */
+        function normalize(str) {
+            return (str || "")
+                .toLowerCase()
+                .replace(/['’‘"“”]/g, "'")
+                .replace(/[^\w\s']/g, " ")
+                .replace(/\s+/g, " ")
+                .trim();
+        }
+
+        function containsAny(text, keywords) {
+            const t = normalize(text);
+            return keywords.some(k => t.includes(normalize(k)));
+        }
+
+        function wordCount(text) {
+            const t = normalize(text);
+            return t.length ? t.split(" ").length : 0;
+        }
+
+        function fmtTime(s) {
+            const m = Math.floor(s / 60).toString().padStart(2, "0");
+            const sec = (s % 60).toString().padStart(2, "0");
+            return m + ":" + sec;
+        }
+
+        /* ============================================================
+           START
+           ============================================================ */
+        document.getElementById("start-btn").addEventListener("click", () => {
+            const n = document.getElementById("s-name").value.trim();
+            const id = document.getElementById("s-id").value.trim();
+            if (!n || !id) {
+                document.getElementById("start-error").style.display = "block";
+                return;
+            }
+            studentName = n;
+            studentId = id;
+            document.getElementById("who-badge").textContent = n + " · " + id;
+            document.getElementById("start-screen").style.display = "none";
+            document.getElementById("quiz-screen").style.display = "block";
+            startTimer();
+        });
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                const el = document.getElementById("timer");
+                el.textContent = fmtTime(Math.max(timeLeft, 0));
+                if (timeLeft <= 60) el.classList.add("low");
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    autoSubmitted = true;
+                    doSubmit(true);
+                }
+            }, 1000);
+        }
+
+        /* ============================================================
+           ANTI-CHEAT
+           ============================================================ */
+        function flagTabSwitch() {
+            if (submitted) return;
+            tabSwitchCount++;
+            const flag = document.getElementById("tabflag");
+            flag.classList.add("show");
+            document.getElementById("tabflag-text").textContent = "Tab switch / minimize detected (" + tabSwitchCount + ")";
+            if (tabSwitchCount >= 3 && !submitted) {
+                autoSubmitted = true;
+                doSubmit(true, "Auto-submitted after repeated tab switching (policy violation).");
+            }
+        }
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden) flagTabSwitch();
+        });
+        window.addEventListener("blur", () => {
+            if (document.getElementById("quiz-screen").style.display !== "none") flagTabSwitch();
+        });
+
+        /* ============================================================
+           ANSWER KEY & KEYWORD SETS
+           ============================================================ */
+        const answerKey = {
+            a1: { correctLabel: "evidence" },
+            a2: { correctLabel: "analysis" },
+            a3: { correctLabel: "evidence" },
+            b1: {
+                analysisKeywords: ["suggests", "indicates", "reveals", "demonstrates", "shows that", "implies",
+                    "this pattern", "this vulnerability", "because", "since"
+                ],
+                linkKeywords: ["vulnerable", "vulnerability", "susceptible", "at risk", "fragile",
+                    "especially vulnerable"
+                ],
+                reasoningKeywords: ["profit margin", "thin margin", "cash reserve", "savings", "foot traffic",
+                    "subsidy", "subsidies", "loan", "financial cushion", "delivery", "chain", "reserves",
+                    "overhead", "operating cost", "revenue"
+                ]
+            },
+            c1: { correctLabel: "yes" }
+        };
+
+        // Explanation keyword sets for Q1–Q3
+        const explainKeywords = {
+            a1: {
+                // "reports a specific statistic" or similar
+                words: ["statistic", "data", "report", "number", "percent", "figure", "specific",
+                    "factual", "quantitative", "measure", "percentage", "statistical", "count",
+                    "figure", "numerical", "exact"
+                ],
+                model: "It reports a specific statistic"
+            },
+            a2: {
+                // "interprets what the statistic means" or similar
+                words: ["interpret", "suggest", "mean", "indicate", "imply", "conclude", "shows that",
+                    "demonstrate", "explain", "meaning", "significance", "analysis", "therefore",
+                    "thus", "since", "suggests", "implies", "reveals", "because", "consequently",
+                    "this means", "in other words"
+                ],
+                model: "It interprets what the statistic means"
+            },
+            a3: {
+                // "gives a specific measurable example" or similar
+                words: ["example", "instance", "specific", "measurable", "case", "illustrate",
+                    "demonstrate", "show", "particular", "sample", "like", "such as", "for instance",
+                    "concrete", "real-world", "actual"
+                ],
+                model: "It gives a specific measurable example"
+            }
+        };
+
+        /* ============================================================
+           VALIDATION
+           ============================================================ */
+        function getAllCards() {
+            return Array.from(document.querySelectorAll("#quiz-screen [data-qid]"));
+        }
+
+        function isAnswered(card) {
+            const qid = card.dataset.qid;
+
+            // Q4 (long answer)
+            if (qid === "b1") {
+                const ta = card.querySelector('[data-role="longanswer"]');
+                return ta.value.trim().length > 0;
+            }
+
+            // Q1–Q3: require label AND explanation
+            if (qid === "a1" || qid === "a2" || qid === "a3") {
+                const sel = card.querySelector('[data-role="label"]');
+                const exp = card.querySelector('[data-role="explain"]');
+                return sel && sel.value !== "" && exp && exp.value.trim().length > 0;
+            }
+
+            // Q5 (c1) – just the select
+            if (qid === "c1") {
+                const sel = card.querySelector('[data-role="label"]');
+                return sel && sel.value !== "";
+            }
+
+            return true;
+        }
+
+        function validateAll() {
+            const missing = [];
+            getAllCards().forEach((card) => {
+                // remove old markers
+                card.classList.remove("missing-card");
+                card.querySelectorAll('select,input,textarea').forEach(el => el.classList.remove("missing"));
+
+                if (!isAnswered(card)) {
+                    missing.push(card.dataset.qid);
+                    card.classList.add("missing-card");
+                    // mark all relevant inputs in this card
+                    card.querySelectorAll('select, textarea, input[data-role="explain"]').forEach(el => {
+                        if (el.dataset.role === "label" || el.dataset.role === "explain" || el.dataset
+                            .role === "longanswer") {
+                            if (el.value.trim() === "" || el.value === "") {
+                                el.classList.add("missing");
+                            }
+                        }
+                    });
+                }
+            });
+            return missing;
+        }
+
+        /* ============================================================
+           COLLECT ANSWERS
+           ============================================================ */
+        function collectAnswers() {
+            const data = {};
+            getAllCards().forEach(card => {
+                const qid = card.dataset.qid;
+                const sel = card.querySelector('[data-role="label"]');
+                const exp = card.querySelector('[data-role="explain"]');
+                const ta = card.querySelector('[data-role="longanswer"]');
+                data[qid] = {
+                    label: sel ? sel.value : "",
+                    explain: exp ? exp.value.trim() : "",
+                    longanswer: ta ? ta.value.trim() : ""
+                };
+            });
+            return data;
+        }
+
+        /* ============================================================
+           GRADING
+           ============================================================ */
+        function gradeAll(answers) {
+            const results = [];
+            let total = 0;
+
+            // ---- Q1–Q3: label + explanation ----
+            const qids = ["a1", "a2", "a3"];
+            const titles = ["Question 1 — Label the sentence", "Question 2 — Label the sentence",
+                "Question 3 — Label the sentence"
+            ];
+
+            qids.forEach((qid, idx) => {
+                const key = answerKey[qid];
+                const given = answers[qid].label;
+                const givenExplain = answers[qid].explain || "";
+                const labelCorrect = (given === key.correctLabel);
+
+                // --- grade explanation ---
+                const eSet = explainKeywords[qid];
+                const hasKeyword = containsAny(givenExplain, eSet.words);
+                const hasMinLen = wordCount(givenExplain) >= 3;
+                const explainOk = hasKeyword && hasMinLen;
+
+                let earned = 0;
+                if (labelCorrect) earned += 0.5;
+                if (explainOk) earned += 0.5;
+
+                // if the label is wrong, we still give explanation credit if it's good
+                // but the label part stays 0
+                // (already handled: labelCorrect gives 0.5)
+
+                total += earned;
+
+                const labelDisplay = given ? given.charAt(0).toUpperCase() + given.slice(1) : "(no answer)";
+                const explainDisplay = givenExplain || "(no explanation)";
+
+                results.push({
+                    qid: qid,
+                    title: titles[idx],
+                    your: labelDisplay + " — \"" + explainDisplay + "\"",
+                    model: "Correct label: " + (key.correctLabel.charAt(0).toUpperCase() + key.correctLabel.slice(
+                        1)) + "<br>Model explanation: \"" + eSet.model + "\"",
+                    earned: earned,
+                    possible: 1,
+                    breakdown: [
+                        (labelCorrect ? "✓" : "✗") + " Label correct (0.5 pts)",
+                        (explainOk ? "✓" : "✗") + " Explanation is relevant and substantial (0.5 pts)"
+                    ]
+                });
+            });
+
+            // ---- Q4 (b1) ----
+            const b = answers.b1.longanswer;
+            const bkey = answerKey.b1;
+            let bpts = 0;
+            const hasAnalysis = containsAny(b, bkey.analysisKeywords);
+            const hasLink = containsAny(b, bkey.linkKeywords);
+            const hasReason = containsAny(b, bkey.reasoningKeywords);
+            if (hasAnalysis) bpts += 2;
+            if (hasLink) bpts += 1;
+            if (hasReason) bpts += 1;
+            if (wordCount(b) < 6) bpts = Math.min(bpts, 1);
+            total += bpts;
+
+            const bBreakdown = [
+                (hasAnalysis ? "✓" : "✗") + " Contains interpretive/analytical language (2 pts)",
+                (hasLink ? "✓" : "✗") + " Connects back to vulnerability of small businesses (1 pt)",
+                (hasReason ? "✓" : "✗") + " Gives specific reasoning e.g. margins, reserves, foot traffic (1 pt)"
+            ];
+            if (wordCount(b) < 6) bBreakdown.push("⚠ Short answer — capped at 1 pt");
+
+            results.push({
+                qid: "b1",
+                title: "Question 4 — Expand the Example",
+                your: b || "(no answer)",
+                model: "Sample strong answer: small, family-owned businesses run on thin profit margins and limited cash reserves, so extended closures or reduced foot traffic leave them unable to survive — unlike large chains with deeper financial reserves.",
+                earned: bpts,
+                possible: 4,
+                breakdown: bBreakdown
+            });
+
+            // ---- Q5 (c1) ----
+            const c = answers.c1.label;
+            // no points, just completion record
+            results.push({
+                qid: "c1",
+                title: "Question 5 — Bring Your Materials",
+                your: c === "yes" ? "Yes, I have it ready" : (c === "no" ? "No, not yet" : "(no answer)"),
+                model: "No written answer required — accepted if outline is present in class.",
+                earned: null,
+                possible: null,
+                completionOnly: true
+            });
+
+            return { results, total };
+        }
+
+        /* ============================================================
+           SUBMIT
+           ============================================================ */
+        document.getElementById("submit-btn").addEventListener("click", () => {
+            const missing = validateAll();
+            const box = document.getElementById("reminder-box");
+            if (missing.length > 0) {
+                const qNames = missing.map(id => {
+                    const map = { a1: "1", a2: "2", a3: "3", b1: "4", c1: "5" };
+                    return map[id] || id;
+                });
+                box.innerHTML = "<strong>Please answer all questions before submitting.</strong> You have not answered Question(s): " +
+                    qNames.join(", ") +
+                    ". Make sure you have selected a label AND written an explanation for each Part A question.";
+                box.classList.add("show");
+                box.scrollIntoView({ behavior: "smooth", block: "center" });
+                return;
+            }
+            box.classList.remove("show");
+            document.getElementById("confirm-modal").classList.add("show");
+        });
+
+        document.getElementById("confirm-no").addEventListener("click", () => {
+            document.getElementById("confirm-modal").classList.remove("show");
+        });
+
+        document.getElementById("confirm-yes").addEventListener("click", () => {
+            document.getElementById("confirm-modal").classList.remove("show");
+            doSubmit(false);
+        });
+
+        function doSubmit(auto, forceNote) {
+            if (submitted) return;
+            submitted = true;
+            clearInterval(timerInterval);
+
+            const answers = collectAnswers();
+            const graded = gradeAll(answers);
+
+            // ---- send to Google Sheets ----
+            try {
+                fetch(GAS_ENDPOINT, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify({
+                        activity: ACTIVITY,
+                        timestamp: new Date().toISOString(),
+                        name: studentName,
+                        studentId: studentId,
+                        score: graded.total,
+                        totalPossible: TOTAL_POINTS,
+                        tabSwitchCount: tabSwitchCount,
+                        autoSubmitted: !!auto,
+                        answers: JSON.stringify(answers)
+                    })
+                });
+            } catch (e) { /* fail silently — don't block student results */ }
+
+            renderResults(graded, auto, forceNote);
+        }
+
+        /* ============================================================
+           RENDER RESULTS
+           ============================================================ */
+        function renderResults(graded, auto, forceNote) {
+            document.getElementById("quiz-screen").style.display = "none";
+            document.getElementById("results-screen").style.display = "block";
+            document.getElementById("score-num").textContent = graded.total + " / " + TOTAL_POINTS;
+
+            const list = document.getElementById("results-list");
+            list.innerHTML = "";
+
+            graded.results.forEach(r => {
+                const div = document.createElement("div");
+                div.className = "result-item";
+
+                let ptsClass = "none",
+                    ptsLabel = "";
+                if (r.completionOnly) {
+                    ptsClass = "full";
+                    ptsLabel = "Recorded";
+                } else {
+                    ptsClass = r.earned === r.possible ? "full" : (r.earned > 0 ? "partial" : "none");
+                    ptsLabel = r.earned + " / " + r.possible;
+                }
+
+                let breakdownHtml = "";
+                if (r.breakdown) {
+                    breakdownHtml = `<div style="font-size:13px; color:#555; margin-top:6px;">${r.breakdown.join("<br>")}</div>`;
+                }
+
+                div.innerHTML = `
+              <div class="rhead">
+                <strong>${r.title}</strong>
+                <span class="pts ${ptsClass}">${ptsLabel}</span>
+              </div>
+              <span class="small-label">Your Answer</span>
+              <div class="your-answer">${r.your}</div>
+              <span class="small-label">Correct / Model Answer</span>
+              <div class="model-answer">${r.model}</div>
+              ${breakdownHtml}
+            `;
+                list.appendChild(div);
+            });
+
+            let note = "Submitted by " + studentName + " (" + studentId + "). Tab switches / minimizes detected: " +
+                tabSwitchCount + ".";
+            if (auto) note += " ⚠ This task was auto-submitted (" + (forceNote || "time expired") + ").";
+            document.getElementById("integrity-note").textContent = note;
+        }
+    </script>
+
+</body>
+</html>
